@@ -1,14 +1,15 @@
 import React from 'react';
 
-import Col from '@/components/Common/Col';
-import { invitationImg } from '@/assets';
-import { FontWeights, FontSizes, device } from '@/lib/ui';
 import { Typography } from '@mui/material';
 
+import { FontWeights, FontSizes, device } from '@/lib/ui';
+import { invitationImg } from '@/assets';
+
+import Col from '@/components/Common/Col';
 import BouncingScrollArrow, {
   IBouncingScrollArrow,
 } from '@/components/Rsvp/BouncingScrollArrow';
-import MediaController from '../Common/MediaController';
+import MediaController from '@/components/Common/MediaController';
 
 export type ILanding = Pick<IBouncingScrollArrow, 'handleScroll'>;
 
