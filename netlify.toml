@@ -6,3 +6,8 @@
   YARN_VERSION = "3.2.1"
   CI = "false"
 
+
+[[redirects]]
+  from = "/*"
+  to = "index.html"
+  status = 200
