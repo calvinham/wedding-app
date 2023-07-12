@@ -1,6 +1,10 @@
 import React from 'react';
 
-const FullSizeImg: React.FC<{ src: string; alt: string }> = ({ src, alt }) => {
+const FullSizeImg: React.FC<{
+  src: string;
+  alt: string;
+  grayscale?: number;
+}> = ({ src, alt, grayscale }) => {
   return (
     <img
       src={src}
@@ -8,6 +12,7 @@ const FullSizeImg: React.FC<{ src: string; alt: string }> = ({ src, alt }) => {
       style={{
         width: '100%',
         height: 'auto',
+        filter: `grayscale(${grayscale ? grayscale : 0}%)`,
       }}
     />
   );
