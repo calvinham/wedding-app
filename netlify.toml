@@ -1,0 +1,8 @@
+[build]
+  command = "yarn build"  # or yarn build
+  publish = "dist/"
+
+[build.environment]
+  YARN_VERSION = "3.2.1"
+  CI = "false"
+
