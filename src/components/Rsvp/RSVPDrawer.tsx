@@ -3,7 +3,7 @@ import { Box, Drawer } from '@mui/material';
 import React from 'react';
 import { RSVPFlowState } from '@/state/reducers/rsvp';
 
-import { useAllInvitations } from '@/hooks/invitations';
+import useAllInvitations from '@/hooks/useAllInvitations';
 
 import RSVP_FORM_CONFIG from '@/components/Rsvp/formConfig';
 

@@ -10,40 +10,56 @@ import useActiveInvitation from '@/hooks/rsvp/useActiveInvitation';
 
 import {
   RSVPFlowState,
+  resetRsvpState,
   setUserAttending,
   updateFlowState,
 } from '@/state/reducers/rsvp';
 
 import Col from '@/components/Common/Col';
 import { MISS_YOU_SLUG, SEE_YOU_SOON_SLUG } from '@/components/App/slugs';
+import useUpdateInvitation from '@/hooks/useUpdateInvitation';
+import useBoolean from '@/hooks/ui/useBoolean';
 
 const AttendanceForm: React.FC<{}> = () => {
   const activeInvitation = useActiveInvitation();
+  const [loading, { setTrue, setFalse }] = useBoolean(false);
+
+  const [updateInvitation] = useUpdateInvitation();
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const setAttending = useCallback(
-    (attending: boolean) => {
+    async (attending: boolean) => {
       if (!activeInvitation) return;
-
-      dispatch(setUserAttending(attending));
+      setTrue();
 
       if (!attending) {
-        dispatch(updateFlowState(RSVPFlowState.DONE));
+        await updateInvitation({
+          attending: false,
+        });
+        setFalse();
+        dispatch(resetRsvpState());
         navigate(`/${MISS_YOU_SLUG}`);
         return;
       }
 
       if (activeInvitation.numGuests === 1) {
-        dispatch(updateFlowState(RSVPFlowState.DONE));
+        await updateInvitation({
+          attending: true,
+          hasPlusOne: false,
+        });
+        setFalse();
+        dispatch(resetRsvpState());
         navigate(`/${SEE_YOU_SOON_SLUG}`);
         return;
       }
 
+      dispatch(setUserAttending(attending));
+      setFalse();
       dispatch(updateFlowState(RSVPFlowState.HAS_PLUS_ONE));
     },
-    [activeInvitation, dispatch, navigate]
+    [activeInvitation, updateInvitation, dispatch, navigate, setTrue, setFalse]
   );
 
   if (!activeInvitation) return null;
@@ -53,12 +69,14 @@ const AttendanceForm: React.FC<{}> = () => {
       <SvgButton
         src={yesButtonTextImg}
         alt="yes"
+        disabled={loading}
         onClick={() => setAttending(true)}
         sx={{ width: '100%', height: '80px', maxWidth: '382px' }}
       />
       <SvgButton
         src={noButtonTextImg}
         alt="no"
+        disabled={loading}
         onClick={() => setAttending(false)}
         sx={{ width: '100%', height: '80px', maxWidth: '382px' }}
       />

@@ -14,17 +14,11 @@ const RSVP_FORM_CONFIG: {
   [RSVPFlowState.ATTENDING]: {
     title: 'Can you make it to the event on the evening of September 29th?',
   },
-  [RSVPFlowState.NOT_ATTENDING]: {
-    title: '',
-  },
   [RSVPFlowState.HAS_PLUS_ONE]: {
     title: 'Are you bringing a +1?',
   },
   [RSVPFlowState.PLUS_ONE_NAME]: {
     title: "What's your +1's name?",
-  },
-  [RSVPFlowState.DONE]: {
-    title: '',
   },
 };
 

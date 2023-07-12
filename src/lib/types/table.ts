@@ -6,14 +6,14 @@ export enum RSVP {
 }
 
 export type InvitationTableRow = {
-  id: number;
-  firstName: string;
-  lastName: string;
-  alias: string | null;
-  needsLodging: boolean | null;
-  address: string | null;
-  numGuests: number;
-  guestsAttending: number | null;
-  rsvp: RSVP | null;
-  plusOne: string | null;
+  id: string;
+  firstName: string | undefined;
+  lastName: string | undefined;
+  alias: string | undefined;
+  needsLodging: boolean | undefined;
+  address: string | undefined;
+  numGuests: number | undefined;
+  guestsAttending: number | undefined;
+  rsvp: RSVP | undefined;
+  plusOne: string | undefined;
 };

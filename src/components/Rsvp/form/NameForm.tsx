@@ -8,13 +8,16 @@ import SvgButton from '@/components/Common/SvgButton';
 import Col from '@/components/Common/Col';
 import { Box } from '@mui/material';
 import { IRSVPDrawer } from '@/components/Rsvp/RSVPDrawer';
-import { useGetIsInvited } from '@/hooks/invitations';
 import { useAppDispatch } from '@/state';
 import {
   RSVPFlowState,
   setActiveInvitation,
+  setFirstName,
+  setLastName,
   updateFlowState,
 } from '@/state/reducers/rsvp';
+
+import { useFindInvitation } from '@/hooks/useFindInvitation';
 
 type RsvpNameFormState = {
   name: string | undefined;
@@ -41,12 +44,7 @@ const FormInner: React.FC<FormikProps<RsvpNameFormState>> = ({ values }) => {
         pt={4}
       >
         <Box maxWidth="700px" width="100%">
-          <FormInput
-            fieldName="name"
-            fullWidth
-            size="medium"
-            placeholder="John Doe"
-          />
+          <FormInput fieldName="name" placeholder="John Doe" fullWidth />
         </Box>
         <SvgButton
           type="submit"
@@ -65,11 +63,9 @@ const FormInner: React.FC<FormikProps<RsvpNameFormState>> = ({ values }) => {
 };
 
 const NameForm: React.FC<IRSVPDrawer> = ({ invitations }) => {
-  const [getIsInvited] = useGetIsInvited();
-
-  console.log(invitations);
-
   const dispatch = useAppDispatch();
+
+  const [findInvitation] = useFindInvitation();
 
   const onSubmit = useCallback(
     (
@@ -80,11 +76,12 @@ const NameForm: React.FC<IRSVPDrawer> = ({ invitations }) => {
 
       try {
         setSubmitting(true);
+        const result = findInvitation(values.name);
+        console.debug('[Rsvp/NameForm]: invited User: ', result);
 
-        const result = getIsInvited(values.name);
-        console.debug('invited User: ', result);
-
-        dispatch(setActiveInvitation(result));
+        dispatch(setActiveInvitation(result.invitedUser));
+        dispatch(setFirstName(result.firstName));
+        dispatch(setLastName(result.lastName));
         dispatch(updateFlowState(RSVPFlowState.ATTENDING));
 
         setSubmitting(false);
@@ -95,7 +92,7 @@ const NameForm: React.FC<IRSVPDrawer> = ({ invitations }) => {
         setFieldError('name', err.message);
       }
     },
-    [invitations, getIsInvited, dispatch]
+    [invitations, findInvitation, dispatch]
   );
 
   return (

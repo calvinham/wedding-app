@@ -5,7 +5,7 @@ import Page from '@/components/Common/Page';
 import Landing from '@/components/Rsvp/Landing';
 import RsvpInfo from '@/components/Rsvp/RsvpInfo';
 import RSVPDrawer from '@/components/Rsvp/RSVPDrawer';
-import { useAllInvitations } from '@/hooks/invitations';
+import useAllInvitations from '@/hooks/useAllInvitations';
 
 const Rsvp: React.FC<{}> = () => {
   const scrollRef = useRef<HTMLDivElement | null>(null);

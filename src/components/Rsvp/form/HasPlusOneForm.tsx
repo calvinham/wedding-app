@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '@/state';
 import {
   RSVPFlowState,
+  resetRsvpState,
   setHasPlusOne,
   updateFlowState,
 } from '@/state/reducers/rsvp';
@@ -16,26 +17,39 @@ import Col from '@/components/Common/Col';
 import SvgButton from '@/components/Common/SvgButton';
 
 import { yesButtonTextImg, noButtonTextImg } from '@/assets';
+import useUpdateInvitation from '@/hooks/useUpdateInvitation';
+import useBoolean from '@/hooks/ui/useBoolean';
 
 const HasPlusOneForm: React.FC<{}> = () => {
-  const activeInvitation = useActiveInvitation();
+  const [loading, { setTrue, setFalse }] = useBoolean(false);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  const activeInvitation = useActiveInvitation();
+
+  const [updateInvitation] = useUpdateInvitation();
+
   const setPlusOne = useCallback(
-    (hasPlusOne: boolean) => {
+    async (hasPlusOne: boolean) => {
       if (!activeInvitation) return;
-      dispatch(setHasPlusOne(hasPlusOne));
+      setTrue();
 
       if (hasPlusOne) {
+        dispatch(setHasPlusOne(hasPlusOne));
+        setFalse();
         dispatch(updateFlowState(RSVPFlowState.PLUS_ONE_NAME));
-      } else {
-        dispatch(updateFlowState(RSVPFlowState.DONE));
-        navigate(`/${SEE_YOU_SOON_SLUG}`);
+        return;
       }
+
+      await updateInvitation({
+        hasPlusOne: false,
+      });
+      setFalse();
+      dispatch(resetRsvpState());
+      navigate(`/${SEE_YOU_SOON_SLUG}`);
     },
-    [dispatch]
+    [dispatch, updateInvitation, setTrue, setFalse]
   );
 
   if (!activeInvitation) return null;
@@ -45,12 +59,14 @@ const HasPlusOneForm: React.FC<{}> = () => {
       <SvgButton
         src={yesButtonTextImg}
         alt="yes"
+        disabled={loading}
         onClick={() => setPlusOne(true)}
         sx={{ width: '100%', height: '80px', maxWidth: '382px' }}
       />
       <SvgButton
         src={noButtonTextImg}
         alt="no"
+        disabled={loading}
         onClick={() => setPlusOne(false)}
         sx={{ width: '100%', height: '80px', maxWidth: '382px' }}
       />

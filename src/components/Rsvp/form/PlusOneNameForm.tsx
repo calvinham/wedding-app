@@ -3,23 +3,17 @@ import { SEE_YOU_SOON_SLUG } from '@/components/App/slugs';
 import Col from '@/components/Common/Col';
 import FormInput from '@/components/Common/FormInput';
 import SvgButton from '@/components/Common/SvgButton';
-import { useAppDispatch } from '@/state';
-import {
-  RSVPFlowState,
-  setPlusOneName,
-  updateFlowState,
-} from '@/state/reducers/rsvp';
+import useActiveInvitation from '@/hooks/rsvp/useActiveInvitation';
+import useUpdateInvitation from '@/hooks/useUpdateInvitation';
+import { useAppDispatch, useAppSelector } from '@/state';
+import { resetRsvpState, setPlusOneName } from '@/state/reducers/rsvp';
 import { Box } from '@mui/material';
 import { Formik, FormikHelpers, FormikProps, Form } from 'formik';
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 type RsvpNameFormState = {
   name: string | undefined;
-};
-
-const defaultState: RsvpNameFormState = {
-  name: undefined,
 };
 
 const FormInner: React.FC<FormikProps<RsvpNameFormState>> = ({ values }) => {
@@ -61,8 +55,26 @@ const PlusOneNameForm: React.FC<{}> = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  const firstNameInput = useAppSelector((s) => s.rsvp.firstName);
+
+  const activeInvitation = useActiveInvitation();
+
+  const [updateInvitation] = useUpdateInvitation();
+
+  const inititalValues: RsvpNameFormState = useMemo(() => {
+    if (firstNameInput === activeInvitation?.firstName) {
+      return {
+        name: activeInvitation?.plusOne || undefined,
+      };
+    }
+
+    return {
+      name: undefined,
+    };
+  }, [activeInvitation, firstNameInput]);
+
   const onSubmit = useCallback(
-    (
+    async (
       values: RsvpNameFormState,
       formActions: FormikHelpers<RsvpNameFormState>
     ) => {
@@ -74,13 +86,16 @@ const PlusOneNameForm: React.FC<{}> = () => {
 
         setSubmitting(true);
         dispatch(setPlusOneName(values.name));
-        setSubmitting(false);
 
-        dispatch(updateFlowState(RSVPFlowState.DONE));
+        await updateInvitation({
+          plusOneName: values.name,
+        });
+        setSubmitting(false);
+        dispatch(resetRsvpState());
         navigate(`/${SEE_YOU_SOON_SLUG}`);
       } catch (e) {
         const err = e as Error;
-        console.log('err: ', err);
+
         setFieldError('name', err.message);
         setSubmitting(false);
       }
@@ -89,7 +104,7 @@ const PlusOneNameForm: React.FC<{}> = () => {
   );
 
   return (
-    <Formik initialValues={defaultState} onSubmit={onSubmit}>
+    <Formik initialValues={inititalValues} onSubmit={onSubmit}>
       {(formikProps) => <FormInner {...formikProps} />}
     </Formik>
   );

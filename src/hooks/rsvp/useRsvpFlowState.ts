@@ -1,11 +1,6 @@
-import { InvitationTableRow } from '@/lib/types';
+import { useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from '@/state';
-import {
-  RSVPFlowState,
-  setActiveInvitation,
-  updateFlowState,
-} from '@/state/reducers/rsvp';
-import { useCallback, useMemo } from 'react';
+import { RSVPFlowState, updateFlowState } from '@/state/reducers/rsvp';
 
 const RSVP_HAS_FORM = [
   RSVPFlowState.NAME,
@@ -16,36 +11,8 @@ const RSVP_HAS_FORM = [
 
 export default function useRsvpFlowState() {
   const flowState = useAppSelector((s) => s.rsvp.flowState);
-  const invitation = useAppSelector((s) => s.rsvp.invitation);
 
   const dispatch = useAppDispatch();
-
-  const setInvitation = useCallback(
-    (inviteTableRow: InvitationTableRow) => {
-      if (flowState !== RSVPFlowState.NAME) {
-        return;
-      }
-      dispatch(setActiveInvitation(inviteTableRow));
-      dispatch(updateFlowState(RSVPFlowState.ATTENDING));
-    },
-    [flowState, dispatch]
-  );
-
-  const setAttending = useCallback(
-    (attending: boolean) => {
-      if (!invitation || flowState !== RSVPFlowState.ATTENDING) {
-        return;
-      }
-      if (!attending) {
-        dispatch(updateFlowState(RSVPFlowState.NOT_ATTENDING));
-        return;
-      } else {
-        dispatch(updateFlowState(RSVPFlowState.HAS_PLUS_ONE));
-        return;
-      }
-    },
-    [invitation, flowState, dispatch]
-  );
 
   const util = useMemo(() => {
     const stepHasForm = RSVP_HAS_FORM.includes(flowState);
@@ -56,10 +23,9 @@ export default function useRsvpFlowState() {
 
     return {
       stepHasForm,
-      setInvitation,
       close,
     };
-  }, [flowState, dispatch, setInvitation]);
+  }, [flowState, dispatch]);
 
   return [flowState, util] as const;
 }

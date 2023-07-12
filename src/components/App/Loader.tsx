@@ -1,17 +1,24 @@
-import { usePrefetchInvitations } from '@/state/api';
 import React, { useEffect } from 'react';
 
-const Loader: React.FC<{}> = () => {
-  const prefetchInvitations = usePrefetchInvitations();
+import { useLocation, useNavigate } from 'react-router-dom';
+
+import { RSVP_SLUG, VALID_PATHS } from './slugs';
+
+function useNavigateToRsvp() {
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetch = async () => {
-      const data = await prefetchInvitations({});
-      console.log('prefetched data: ', data);
-    };
+    if (!VALID_PATHS.includes(pathname)) {
+      navigate(`/${RSVP_SLUG}`);
+    }
+  }, [pathname, navigate]);
 
-    fetch();
-  }, []);
+  return null;
+}
+
+const Loader: React.FC<{}> = () => {
+  useNavigateToRsvp();
 
   return null;
 };
