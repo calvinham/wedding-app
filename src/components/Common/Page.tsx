@@ -19,7 +19,14 @@ const Page: React.FC<IPage> = ({ pageMaxWidth, pageRef, ...props }) => {
       maxWidth={pageMaxWidth}
       ref={pageRef}
     >
-      <Col width="100%" height="100%" flex={1} px={PageMargins.x} {...props} />
+      <Col
+        width="100%"
+        height="100%"
+        flex={1}
+        px={PageMargins.x}
+        boxSizing="border-box"
+        {...props}
+      />
     </Container>
   );
 };

@@ -3,7 +3,7 @@ import React from 'react';
 import NavItem from '@/components/NavBar/NavItem';
 import navItems from '@/components/NavBar/navItems';
 import { Box } from '@mui/material';
-import { responsiveSx } from '@/lib/ui';
+import { AppPalette, responsiveSx } from '@/lib/ui';
 
 const NavBar: React.FC<{}> = () => {
   return (
@@ -13,7 +13,7 @@ const NavBar: React.FC<{}> = () => {
       top={0}
       left={0}
       zIndex={999}
-      sx={{ background: 'white' }}
+      sx={{ background: AppPalette.white }}
     >
       <Box
         sx={{

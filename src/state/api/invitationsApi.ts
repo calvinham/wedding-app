@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-import Invitations from '@/lib/airtable/Invitations';
+import AirtableAPI from '@/lib/airtable/AirtableAPI';
+import { InvitationTableRow } from '@/lib/types';
 
 const invitationsApi = createApi({
   reducerPath: 'invitationsApi',
@@ -9,10 +10,9 @@ const invitationsApi = createApi({
   }),
   endpoints: (builder) => {
     return {
-      getInvitations: builder.query({
+      getInvitations: builder.query<InvitationTableRow[], any>({
         async queryFn() {
-          const instance = Invitations.getInstance();
-          const data = await instance.getAllInvitations();
+          const data = await AirtableAPI.getInvitations();
           return { data };
         },
       }),
@@ -22,5 +22,11 @@ const invitationsApi = createApi({
 
 export const { useLazyGetInvitationsQuery, useGetInvitationsQuery } =
   invitationsApi;
+
+const { usePrefetch } = invitationsApi;
+
+export const usePrefetchInvitations = () => {
+  return usePrefetch('getInvitations');
+};
 
 export default invitationsApi;
