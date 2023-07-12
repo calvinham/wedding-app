@@ -1,8 +1,8 @@
 import nextIconImg from './Next.svg';
-import rsvpIconImg from './RSVP.svg';
+import rsvpIconImg from './Rsvp.svg';
 import YesIconImg from './Yes.svg';
 import NoIconImg from './No.svg';
-import rsvpNoArrowImg from './RSVPNoArrow.svg';
+import rsvpNoArrowImg from './RsvpNoArrow.svg';
 
 const nextButtonTextImg = nextIconImg;
 const rsvpButtonTextImg = rsvpIconImg;
