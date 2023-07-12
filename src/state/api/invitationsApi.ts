@@ -23,4 +23,10 @@ const invitationsApi = createApi({
 export const { useLazyGetInvitationsQuery, useGetInvitationsQuery } =
   invitationsApi;
 
+const { usePrefetch } = invitationsApi;
+
+export const usePrefetchInvitations = () => {
+  return usePrefetch('getInvitations');
+};
+
 export default invitationsApi;

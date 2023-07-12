@@ -3,7 +3,7 @@ import React from 'react';
 import Providers from '@/components/App/Providers';
 import Routes from '@/components/App/Routes';
 
-import NavBar from '@/components/NavBar';
+import NavBar from '@/components/NavBar/NavBar';
 import { NavBarHeights, responsiveSx } from '@/lib/ui';
 import Loader from '@/components/App/Loader';
 import { Box } from '@mui/material';

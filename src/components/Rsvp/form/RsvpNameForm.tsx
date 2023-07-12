@@ -1,5 +1,4 @@
 import React, { useCallback } from 'react';
-import FormFrame from '@/components/Common/FormFrame';
 import FormInput from '@/components/Common/FormInput';
 import useRsvpFlowState from '@/hooks/rsvp/useRsvpFlowState';
 import { Form, Formik, FormikHelpers, FormikProps } from 'formik';
@@ -11,6 +10,12 @@ import Col from '@/components/Common/Col';
 import { Box } from '@mui/material';
 import { IRSVPDrawer } from '../RSVPDrawer';
 import { useGetIsInvited } from '@/hooks/invitations';
+import { useAppDispatch } from '@/state';
+import {
+  RSVPFlowState,
+  setActiveInvitation,
+  updateFlowState,
+} from '@/state/reducers/rsvp';
 
 type RsvpNameFormState = {
   name: string | undefined;
@@ -43,8 +48,12 @@ const FormInner: React.FC<FormikProps<RsvpNameFormState>> = ({ values }) => {
           type="submit"
           src={nextButtonTextImg}
           alt="rsvp-next"
-          maxWidth={218}
           disabled={disabled}
+          sx={{
+            width: '100%',
+            maxWidth: '218px',
+            height: '82px',
+          }}
         />
       </Col>
     </Form>
@@ -52,29 +61,33 @@ const FormInner: React.FC<FormikProps<RsvpNameFormState>> = ({ values }) => {
 };
 
 const RsvpNameForm: React.FC<IRSVPDrawer> = ({ invitations }) => {
-  const [_, { goNext }] = useRsvpFlowState();
+  const [_, { setInvitation }] = useRsvpFlowState();
 
   const [getIsInvited] = useGetIsInvited();
+  const dispatch = useAppDispatch();
 
   const onSubmit = useCallback(
     (
       values: RsvpNameFormState,
       formActions: FormikHelpers<RsvpNameFormState>
     ) => {
-      try {
-        formActions.setSubmitting(true);
-        const invitedUser = getIsInvited(values.name);
-        console.log('invited User: ', invitedUser);
+      const { setSubmitting, setFieldError } = formActions;
 
-        formActions.setSubmitting(false);
+      try {
+        setSubmitting(true);
+        const result = getIsInvited(values.name);
+        console.debug('invited User: ', result);
+        setSubmitting(false);
+        dispatch(setActiveInvitation(result));
+        dispatch(updateFlowState(RSVPFlowState.ATTENDING));
       } catch (e: any) {
         const err = e as Error;
-        console.debug('error: ', err);
-        formActions.setSubmitting(false);
-        formActions.setFieldError('name', e.message);
+
+        setSubmitting(false);
+        setFieldError('name', err.message);
       }
     },
-    [invitations]
+    [invitations, getIsInvited, dispatch, setInvitation]
   );
 
   return (

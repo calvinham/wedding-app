@@ -28,6 +28,11 @@ export function useGetIsInvited() {
           throw new Error(inviteErrMessages.noInput);
         }
         const inputSplit = input.split(' ');
+
+        if (inputSplit.length < 2) {
+          throw new Error(inviteErrMessages.noFirstOrLastName);
+        }
+
         const firstName = inputSplit[0].trim().toLowerCase();
         const lastName = inputSplit[inputSplit.length - 1].trim().toLowerCase();
 
@@ -35,10 +40,6 @@ export function useGetIsInvited() {
           firstName,
           lastName,
         });
-
-        if (!lastName || !firstName) {
-          throw new Error(inviteErrMessages.noFirstOrLastName);
-        }
 
         const filteredByLastName =
           invited?.filter((data) => {

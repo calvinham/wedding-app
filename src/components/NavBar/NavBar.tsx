@@ -13,7 +13,7 @@ const NavBar: React.FC<{}> = () => {
       top={0}
       left={0}
       zIndex={999}
-      sx={{ background: 'white' }}
+      sx={{ background: 'yellow' }}
     >
       <Box
         sx={{
