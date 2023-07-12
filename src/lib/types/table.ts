@@ -7,11 +7,12 @@ export enum RSVP {
 
 export type InvitationTableRow = {
   id: number;
-  ['First Name']: string;
-  ['Last Name']: string;
-  ['Needs Lodging']: boolean | null;
+  firstName: string;
+  lastName: string;
+  alias: string | null;
+  needsLodging: boolean | null;
   address: string | null;
-  ['# Guests']: number;
-  ['# Guests Attending']: number | null;
-  ['RSVP']: RSVP | null;
+  numGuests: number;
+  guestsAttending: number | null;
+  rsvp: RSVP | null;
 };
