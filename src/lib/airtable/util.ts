@@ -1,3 +1,4 @@
+import { capitalize, capitalizeOrUndef } from '@/lib/util';
 import { FieldSet, Record } from 'airtable';
 import { InvitationTableRow, RSVP } from '@/lib/types';
 import { RsvpUIState, RsvpUpdateState } from '@/state/reducers/rsvp';
@@ -48,16 +49,28 @@ const parseInvitationRow = (row: Record<FieldSet>): InvitationTableRow => {
 function castFirstName({
   invitation,
   firstName,
-  lastName,
   hasPlusOne,
   plusOneName,
 }: RsvpUpdateState) {
-  if (!invitation || !firstName || !lastName) {
+  if (!invitation || !firstName) {
     return undefined;
   }
 
+  /// If we already account for a Plus One, then we keep the 'First Name' field as is
+  if (invitation.firstName && invitation.plusOne) {
+    return (
+      capitalize(invitation.firstName) + ' + ' + capitalize(invitation.plusOne)
+    );
+  }
+
+  const plusOneFirstName = plusOneName
+    ? plusOneName.split(' ').slice(0, -1).join(' ')
+    : undefined;
+
   const _firstName =
-    hasPlusOne && plusOneName ? `${firstName} + ${plusOneName}` : firstName;
+    hasPlusOne && plusOneFirstName
+      ? `${capitalize(firstName)} + ${capitalize(plusOneFirstName)}`
+      : capitalize(firstName);
 
   return _firstName;
 }
@@ -72,24 +85,25 @@ const castStateToRawInvitation = (rsvpState: RsvpUIState) => {
     return undefined;
   }
 
-  const { invitation } = rsvpState;
+  const { invitation: inv } = rsvpState;
 
-  const numGuestsAttending =
-    rsvpState.hasPlusOne && rsvpState.plusOneName ? 2 : 1;
+  const numAttending =
+    rsvpState.attending === RSVP.NO
+      ? 0
+      : rsvpState.hasPlusOne && rsvpState.plusOneName
+      ? 2
+      : 1;
 
   const toRaw: Partial<FieldSet> = {
-    // id: invitation.id as string,
     [COL.firstName]: castFirstName(rsvpState as RsvpUpdateState),
-    [COL.lastName]: invitation.lastName as string | undefined,
-    [COL.alias]: invitation.alias as string | undefined,
-    [COL.needsLodging]: invitation.needsLodging as boolean | undefined,
-    [COL.address]: invitation.address as string | undefined,
-    [COL.numGuests]: invitation.numGuests as number | undefined,
-    [COL.numGuestsAttending]: numGuestsAttending as number | undefined,
-    [COL.rsvp]: (rsvpState.attending ? RSVP.YES : RSVP.NO) as
-      | string
-      | undefined,
-    [COL.plusOne]: rsvpState.plusOneName?.split(' ')[0] as string | undefined,
+    [COL.lastName]: capitalizeOrUndef(inv.lastName),
+    [COL.alias]: capitalizeOrUndef(inv.alias),
+    [COL.needsLodging]: inv.needsLodging,
+    [COL.address]: inv.address,
+    [COL.numGuests]: inv.numGuests,
+    [COL.numGuestsAttending]: numAttending,
+    [COL.rsvp]: rsvpState.attending,
+    [COL.plusOne]: capitalizeOrUndef(rsvpState.plusOneName) || 'N/A',
   };
 
   return toRaw;

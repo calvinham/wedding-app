@@ -15,8 +15,7 @@ export default function useUpdateInvitation() {
         ...partialState,
       };
 
-      const mutatedState = await handleMutation(_rsvpState).unwrap();
-      console.debug('[useUpdateInvitation]: ', mutatedState);
+      await handleMutation(_rsvpState);
     },
     [handleMutation, rsvpState]
   );

@@ -1,11 +1,10 @@
-import { InvitationTableRow } from '@/lib/types';
+import { InvitationTableRow, RSVP } from '@/lib/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export enum RSVPFlowState {
   INITIAL = 'INITIAL',
   NAME = 'NAME',
   ATTENDING = 'ATTENDING',
-  NOT_ATTENDING = 'NOT_ATTENDING',
   HAS_PLUS_ONE = 'HAS_PLUS_ONE',
   PLUS_ONE_NAME = 'PLUS_ONE_NAME',
 }
@@ -15,7 +14,7 @@ export interface RsvpUIState {
   invitation?: InvitationTableRow;
   firstName?: string;
   lastName?: string;
-  attending?: boolean;
+  attending?: RSVP;
   hasPlusOne?: boolean;
   plusOneName?: string;
 }
@@ -51,7 +50,7 @@ const rsvpSlice = createSlice({
     setLastName: (state, action: PayloadAction<string>) => {
       state.lastName = action.payload;
     },
-    setUserAttending: (state, action: PayloadAction<boolean>) => {
+    setUserAttending: (state, action: PayloadAction<RSVP>) => {
       state.attending = action.payload;
     },
     setHasPlusOne: (state, action: PayloadAction<boolean>) => {

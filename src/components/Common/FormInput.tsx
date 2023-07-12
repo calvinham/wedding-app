@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 
 import { Stack, TextField, TextFieldProps, Typography } from '@mui/material';
 import { useFormikContext } from 'formik';
+import { FontSizes } from '@/lib/ui';
 
 export type IFormInput = {
   fieldName: string;
@@ -37,10 +38,17 @@ export default function FormInput<T extends Record<string, any>>({
         variant="standard"
         {...props}
         sx={{
+          '& .MuiInputBase-root': {
+            fontSize: FontSizes.lg,
+          },
           ...props.sx,
         }}
       />
-      {fieldErr ? <Typography color="error">{fieldErr}</Typography> : null}
+      {fieldErr ? (
+        <Typography textAlign="center" color="error">
+          {fieldErr}
+        </Typography>
+      ) : null}
     </Stack>
   );
 }

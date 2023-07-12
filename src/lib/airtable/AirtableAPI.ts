@@ -1,7 +1,6 @@
+import Airtable from 'airtable';
 import { RsvpUIState } from '@/state/reducers/rsvp';
-import Airtable, { FieldSet, Record } from 'airtable';
 import { airtableUtil } from './util';
-import { InvitationTableRow, RSVP } from '../types';
 
 const airtableClient = new Airtable({
   apiKey: import.meta.env.VITE_AIRTABLE_API_KEY,
@@ -10,18 +9,6 @@ const airtableClient = new Airtable({
 const invitationsTable = airtableClient.base(
   import.meta.env.VITE_AIRTABLE_BASE_ID
 )('Invitations');
-
-const COL = {
-  firstName: 'First Name',
-  lastName: 'Last Name',
-  alias: 'Alias',
-  needsLodging: 'Needs Lodging',
-  address: 'Address',
-  numGuests: '# Guests',
-  numGuestsAttending: '# Guests Attending',
-  rsvp: 'RSVP',
-  plusOne: 'Plus One',
-};
 
 class AirtableAPI {
   static async getInvitations() {

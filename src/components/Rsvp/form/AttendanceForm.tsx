@@ -19,6 +19,7 @@ import Col from '@/components/Common/Col';
 import { MISS_YOU_SLUG, SEE_YOU_SOON_SLUG } from '@/components/App/slugs';
 import useUpdateInvitation from '@/hooks/useUpdateInvitation';
 import useBoolean from '@/hooks/ui/useBoolean';
+import { RSVP } from '@/lib/types';
 
 const AttendanceForm: React.FC<{}> = () => {
   const activeInvitation = useActiveInvitation();
@@ -36,7 +37,7 @@ const AttendanceForm: React.FC<{}> = () => {
 
       if (!attending) {
         await updateInvitation({
-          attending: false,
+          attending: RSVP.NO,
         });
         setFalse();
         dispatch(resetRsvpState());
@@ -46,7 +47,7 @@ const AttendanceForm: React.FC<{}> = () => {
 
       if (activeInvitation.numGuests === 1) {
         await updateInvitation({
-          attending: true,
+          attending: RSVP.YES,
           hasPlusOne: false,
         });
         setFalse();
@@ -55,7 +56,7 @@ const AttendanceForm: React.FC<{}> = () => {
         return;
       }
 
-      dispatch(setUserAttending(attending));
+      dispatch(setUserAttending(RSVP.YES));
       setFalse();
       dispatch(updateFlowState(RSVPFlowState.HAS_PLUS_ONE));
     },

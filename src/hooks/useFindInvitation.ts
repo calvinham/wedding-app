@@ -3,10 +3,10 @@ import useAllInvitations from '@/hooks/useAllInvitations';
 import { capitalize } from '@/lib/util';
 
 const inviteErrMessages = {
-  noInput: 'Name is Required',
-  noFirstOrLastName: 'Both First and Last Names are Required',
+  noInput: 'Your name is required',
+  noFirstOrLastName: 'Both first and last names are required',
   notFound:
-    "We couldn't find you in our list. Please make sure both first and last names are spelled correctly.",
+    "We couldn't find you in our list. Check your spelling and try again",
 };
 
 const parseNames = (input: string | undefined) => {
@@ -20,13 +20,8 @@ const parseNames = (input: string | undefined) => {
       throw new Error(inviteErrMessages.noFirstOrLastName);
     }
 
-    const firstName = inputSplit
-      .slice(0, -1)
-      .map(capitalize)
-      .toString()
-      .replace(',', ' ')
-      .trim();
-    const lastName = capitalize(inputSplit[inputSplit.length - 1].trim());
+    const firstName = inputSplit.slice(0, -1).map(capitalize).join(' ');
+    const lastName = capitalize(inputSplit[inputSplit.length - 1]);
 
     return {
       firstName,
@@ -50,8 +45,8 @@ export function useFindInvitation() {
 
         const { firstName, lastName } = parseNames(input);
 
-        const _firstName = firstName.toLowerCase();
-        const _lastName = lastName.toLowerCase();
+        const _firstName = firstName.toLowerCase().trim();
+        const _lastName = lastName.toLowerCase().trim();
 
         console.debug('[useGetIsInvited/getInvitedUser] names: ', {
           firstName,

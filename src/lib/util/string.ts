@@ -3,5 +3,14 @@ export function numToPx(num: number) {
 }
 
 export function capitalize(str: string) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
+  const strArr = str.split(' ');
+  const capitalized = strArr.map(
+    (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+  );
+  return capitalized.join(' ');
+}
+
+export function capitalizeOrUndef(str: string | undefined) {
+  if (!str) return undefined;
+  return capitalize(str);
 }
