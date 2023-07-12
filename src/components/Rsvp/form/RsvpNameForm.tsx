@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 import FormInput from '@/components/Common/FormInput';
-import useRsvpFlowState from '@/hooks/rsvp/useRsvpFlowState';
 import { Form, Formik, FormikHelpers, FormikProps } from 'formik';
 
 import { nextButtonTextImg } from '@/assets';
@@ -61,9 +60,8 @@ const FormInner: React.FC<FormikProps<RsvpNameFormState>> = ({ values }) => {
 };
 
 const RsvpNameForm: React.FC<IRSVPDrawer> = ({ invitations }) => {
-  const [_, { setInvitation }] = useRsvpFlowState();
-
   const [getIsInvited] = useGetIsInvited();
+
   const dispatch = useAppDispatch();
 
   const onSubmit = useCallback(
@@ -75,11 +73,14 @@ const RsvpNameForm: React.FC<IRSVPDrawer> = ({ invitations }) => {
 
       try {
         setSubmitting(true);
+
         const result = getIsInvited(values.name);
         console.debug('invited User: ', result);
-        setSubmitting(false);
+
         dispatch(setActiveInvitation(result));
         dispatch(updateFlowState(RSVPFlowState.ATTENDING));
+
+        setSubmitting(false);
       } catch (e: any) {
         const err = e as Error;
 
@@ -87,7 +88,7 @@ const RsvpNameForm: React.FC<IRSVPDrawer> = ({ invitations }) => {
         setFieldError('name', err.message);
       }
     },
-    [invitations, getIsInvited, dispatch, setInvitation]
+    [invitations, getIsInvited, dispatch]
   );
 
   return (

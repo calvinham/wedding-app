@@ -2,18 +2,22 @@ import React from 'react';
 
 import { Routes as RouterRoutes, Route } from 'react-router-dom';
 
-import Faq from '@/pages/faq';
-import Rsvp from '@/pages/rsvp';
-import MissYou from '@/pages/missYou';
-import { FAQ_SLUG, MISS_YOU_SLUG, RSVP_SLUG } from './slugs';
+import FaqPage from '@/pages/FaqPage';
+import RsvpPage from '@/pages/RsvpPage';
+import MissYouPage from '@/pages/MissYouPage';
+import SeeYouSoonPage from '@/pages/SeeYouSoonPage';
+
+import { FAQ_SLUG, MISS_YOU_SLUG, RSVP_SLUG, SEE_YOU_SOON_SLUG } from './slugs';
 
 const Routes: React.FC<{}> = () => {
   return (
     <RouterRoutes>
-      <Route path={`/${RSVP_SLUG}`} element={<Rsvp />} />
-      <Route path={`/${FAQ_SLUG}`} element={<Faq />} />
-      <Route path={`/${RSVP_SLUG}/${MISS_YOU_SLUG}`} element={<MissYou />} />
-      <Route path="*" element={<Rsvp />} />
+      <Route path={`/${RSVP_SLUG}`} element={<RsvpPage />} />
+      <Route path={`/${FAQ_SLUG}`} element={<FaqPage />} />
+      <Route path={`/${MISS_YOU_SLUG}`} element={<MissYouPage />} />
+      <Route path={`/${SEE_YOU_SOON_SLUG}`} element={<SeeYouSoonPage />} />
+
+      <Route path="*" element={<RsvpPage />} />
     </RouterRoutes>
   );
 };

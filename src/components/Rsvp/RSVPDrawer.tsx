@@ -4,8 +4,9 @@ import React from 'react';
 import { RSVPFlowState } from '@/state/reducers/rsvp';
 
 import { useAllInvitations } from '@/hooks/invitations';
+
+import RSVP_FORM_CONFIG from '@/components/Rsvp/form/config';
 import FormFrame from '@/components/Common/FormFrame';
-import RSVP_FORM_CONFIG from '@/components/Rsvp/form/rsvpFormConfig';
 import RsvpNameForm from '@/components/Rsvp/form/RsvpNameForm';
 import RsvpAttendanceForm from '@/components/Rsvp/form/RsvpAttendanceForm';
 
