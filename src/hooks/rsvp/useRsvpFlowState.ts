@@ -7,19 +7,10 @@ import {
 } from '@/state/reducers/rsvp';
 import { useCallback, useMemo } from 'react';
 
-export const RSVPFlowOrder = [
-  RSVPFlowState.INITIAL,
-  RSVPFlowState.NAME,
-  RSVPFlowState.ATTENDING,
-  RSVPFlowState.PLUS_ONE,
-  RSVPFlowState.PLUS_ONE_NAME,
-  RSVPFlowState.DONE,
-];
-
 const RSVP_HAS_FORM = [
   RSVPFlowState.NAME,
   RSVPFlowState.ATTENDING,
-  RSVPFlowState.PLUS_ONE,
+  RSVPFlowState.HAS_PLUS_ONE,
   RSVPFlowState.PLUS_ONE_NAME,
 ];
 
@@ -49,7 +40,7 @@ export default function useRsvpFlowState() {
         dispatch(updateFlowState(RSVPFlowState.NOT_ATTENDING));
         return;
       } else {
-        dispatch(updateFlowState(RSVPFlowState.PLUS_ONE));
+        dispatch(updateFlowState(RSVPFlowState.HAS_PLUS_ONE));
         return;
       }
     },
@@ -57,16 +48,6 @@ export default function useRsvpFlowState() {
   );
 
   const util = useMemo(() => {
-    // const goNext = () => {
-    //   const currIndex = RSVPFlowOrder.indexOf(flowState);
-
-    //   if (currIndex === RSVPFlowOrder.length - 1) {
-    //     dispatch(updateFlowState(RSVPFlowState.INITIAL));
-    //   } else {
-    //     dispatch(updateFlowState(RSVPFlowOrder[currIndex + 1]));
-    //   }
-    // };
-
     const stepHasForm = RSVP_HAS_FORM.includes(flowState);
 
     const close = () => {

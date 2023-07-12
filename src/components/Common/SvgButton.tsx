@@ -18,11 +18,7 @@ const SvgButton: React.FC<ISvgButton> = ({ src, alt, ...buttonProps }) => {
       }}
     >
       <Box>
-        <FullSizeImg
-          src={src}
-          alt={alt}
-          grayscale={buttonProps.disabled ? 50 : undefined}
-        />
+        <FullSizeImg src={src} alt={alt} />
       </Box>
     </ButtonBase>
   );

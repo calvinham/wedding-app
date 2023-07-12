@@ -15,4 +15,5 @@ export type InvitationTableRow = {
   numGuests: number;
   guestsAttending: number | null;
   rsvp: RSVP | null;
+  plusOne: string | null;
 };

@@ -17,7 +17,7 @@ const RSVP_FORM_CONFIG: {
   [RSVPFlowState.NOT_ATTENDING]: {
     title: '',
   },
-  [RSVPFlowState.PLUS_ONE]: {
+  [RSVPFlowState.HAS_PLUS_ONE]: {
     title: 'Are you bringing a +1?',
   },
   [RSVPFlowState.PLUS_ONE_NAME]: {

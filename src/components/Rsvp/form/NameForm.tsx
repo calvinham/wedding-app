@@ -7,7 +7,7 @@ import { nextButtonTextImg } from '@/assets';
 import SvgButton from '@/components/Common/SvgButton';
 import Col from '@/components/Common/Col';
 import { Box } from '@mui/material';
-import { IRSVPDrawer } from '../RSVPDrawer';
+import { IRSVPDrawer } from '@/components/Rsvp/RSVPDrawer';
 import { useGetIsInvited } from '@/hooks/invitations';
 import { useAppDispatch } from '@/state';
 import {
@@ -41,7 +41,12 @@ const FormInner: React.FC<FormikProps<RsvpNameFormState>> = ({ values }) => {
         pt={4}
       >
         <Box maxWidth="700px" width="100%">
-          <FormInput fieldName="name" fullWidth />
+          <FormInput
+            fieldName="name"
+            fullWidth
+            size="medium"
+            placeholder="John Doe"
+          />
         </Box>
         <SvgButton
           type="submit"
@@ -59,8 +64,10 @@ const FormInner: React.FC<FormikProps<RsvpNameFormState>> = ({ values }) => {
   );
 };
 
-const RsvpNameForm: React.FC<IRSVPDrawer> = ({ invitations }) => {
+const NameForm: React.FC<IRSVPDrawer> = ({ invitations }) => {
   const [getIsInvited] = useGetIsInvited();
+
+  console.log(invitations);
 
   const dispatch = useAppDispatch();
 
@@ -98,4 +105,4 @@ const RsvpNameForm: React.FC<IRSVPDrawer> = ({ invitations }) => {
   );
 };
 
-export default RsvpNameForm;
+export default NameForm;

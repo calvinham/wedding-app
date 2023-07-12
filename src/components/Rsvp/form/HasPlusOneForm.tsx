@@ -1,48 +1,41 @@
-import SvgButton from '@/components/Common/SvgButton';
-
 import React, { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { yesButtonTextImg, noButtonTextImg } from '@/assets';
 import { useAppDispatch } from '@/state';
-
-import useActiveInvitation from '@/hooks/rsvp/useActiveInvitation';
-
 import {
   RSVPFlowState,
-  setUserAttending,
+  setHasPlusOne,
   updateFlowState,
 } from '@/state/reducers/rsvp';
 
-import Col from '@/components/Common/Col';
-import { MISS_YOU_SLUG, SEE_YOU_SOON_SLUG } from '@/components/App/slugs';
+import useActiveInvitation from '@/hooks/rsvp/useActiveInvitation';
 
-const AttendanceForm: React.FC<{}> = () => {
+import { SEE_YOU_SOON_SLUG } from '@/components/App/slugs';
+
+import Col from '@/components/Common/Col';
+import SvgButton from '@/components/Common/SvgButton';
+
+import { yesButtonTextImg, noButtonTextImg } from '@/assets';
+
+const HasPlusOneForm: React.FC<{}> = () => {
   const activeInvitation = useActiveInvitation();
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const setAttending = useCallback(
-    (attending: boolean) => {
+  const setPlusOne = useCallback(
+    (hasPlusOne: boolean) => {
       if (!activeInvitation) return;
+      dispatch(setHasPlusOne(hasPlusOne));
 
-      dispatch(setUserAttending(attending));
-
-      if (!attending) {
-        dispatch(updateFlowState(RSVPFlowState.DONE));
-        navigate(`/${MISS_YOU_SLUG}`);
-        return;
-      }
-
-      if (activeInvitation.numGuests === 2) {
-        dispatch(updateFlowState(RSVPFlowState.PLUS_ONE));
+      if (hasPlusOne) {
+        dispatch(updateFlowState(RSVPFlowState.PLUS_ONE_NAME));
       } else {
         dispatch(updateFlowState(RSVPFlowState.DONE));
         navigate(`/${SEE_YOU_SOON_SLUG}`);
       }
     },
-    [activeInvitation, dispatch, navigate]
+    [dispatch]
   );
 
   if (!activeInvitation) return null;
@@ -52,17 +45,17 @@ const AttendanceForm: React.FC<{}> = () => {
       <SvgButton
         src={yesButtonTextImg}
         alt="yes"
-        onClick={() => setAttending(true)}
+        onClick={() => setPlusOne(true)}
         sx={{ width: '100%', height: '80px', maxWidth: '382px' }}
       />
       <SvgButton
         src={noButtonTextImg}
         alt="no"
-        onClick={() => setAttending(false)}
+        onClick={() => setPlusOne(false)}
         sx={{ width: '100%', height: '80px', maxWidth: '382px' }}
       />
     </Col>
   );
 };
 
-export default AttendanceForm;
+export default HasPlusOneForm;

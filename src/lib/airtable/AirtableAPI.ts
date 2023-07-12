@@ -7,14 +7,15 @@ const parseInvitationRow = (row: Record<FieldSet>): InvitationTableRow => {
 
   return {
     id: fields.id as number,
-    firstName: row.fields['First Name'] as string,
-    lastName: row.fields['Last Name'] as string,
-    alias: row.fields['Alias'] as string | null,
-    needsLodging: row.fields['Needs Lodging'] as boolean | null,
-    address: row.fields['Address'] as string | null,
-    numGuests: row.fields['# Guests'] as number,
-    guestsAttending: row.fields['# Guests Attending'] as number | null,
-    rsvp: row.fields['RSVP'] as RSVP | null,
+    firstName: fields['First Name'] as string,
+    lastName: fields['Last Name'] as string,
+    alias: fields['Alias'] as string | null,
+    needsLodging: fields['Needs Lodging'] as boolean | null,
+    address: fields['Address'] as string | null,
+    numGuests: fields['# Guests'] as number,
+    guestsAttending: fields['# Guests Attending'] as number | null,
+    rsvp: fields['RSVP'] as RSVP | null,
+    plusOne: fields['Plus One'] as string | null,
   };
 };
 

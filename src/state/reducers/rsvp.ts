@@ -6,7 +6,7 @@ export enum RSVPFlowState {
   NAME = 'NAME',
   ATTENDING = 'ATTENDING',
   NOT_ATTENDING = 'NOT_ATTENDING',
-  PLUS_ONE = 'PLUS_ONE',
+  HAS_PLUS_ONE = 'HAS_PLUS_ONE',
   PLUS_ONE_NAME = 'PLUS_ONE_NAME',
   DONE = 'DONE',
 }
@@ -15,12 +15,16 @@ export interface RsvpUIState {
   flowState: RSVPFlowState;
   invitation?: InvitationTableRow;
   attending?: boolean;
+  hasPlusOne?: boolean;
+  plusOneName?: string;
 }
 
 const initialState: RsvpUIState = {
   flowState: RSVPFlowState.INITIAL,
   invitation: undefined,
   attending: undefined,
+  hasPlusOne: undefined,
+  plusOneName: undefined,
 };
 
 const rsvpSlice = createSlice({
@@ -36,12 +40,25 @@ const rsvpSlice = createSlice({
     setUserAttending: (state, action: PayloadAction<boolean>) => {
       state.attending = action.payload;
     },
+    setHasPlusOne: (state, action: PayloadAction<boolean>) => {
+      state.hasPlusOne = action.payload;
+    },
+    setPlusOneName: (state, action: PayloadAction<string>) => {
+      state.plusOneName = action.payload;
+    },
+    resetRsvpState: () => initialState,
   },
 });
 
 export default rsvpSlice.reducer;
 
-export const { updateFlowState, setActiveInvitation, setUserAttending } =
-  rsvpSlice.actions;
+export const {
+  updateFlowState,
+  setActiveInvitation,
+  setUserAttending,
+  setHasPlusOne,
+  setPlusOneName,
+  resetRsvpState,
+} = rsvpSlice.actions;
 
 export const selectRsvpSlice = (state: { rsvp: RsvpUIState }) => state.rsvp;

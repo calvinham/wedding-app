@@ -7,5 +7,5 @@ export const NavBarHeights = {
 
 export const PageMargins = {
   bottom: '120px',
-  x: '32px',
+  x: 4,
 };
