@@ -21,7 +21,7 @@ const faqCopy: QuestionAnswer[] = [
   {
     question: 'Where can I park?',
     answer:
-      "Once you’ve arrived at the venue, you’ll meet an attendant who will check you in. Let them know that you’re a guest of the Woods/Ham wedding and you'll receive a parking pass.",
+      'Yes! Guests can park in Lot A or B in any available space. If the lots are full, head to overflow parking in the upper parking lot.',
   },
   {
     question: 'Can I take pictures during the ceremony?',
