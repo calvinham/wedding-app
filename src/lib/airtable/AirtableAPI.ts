@@ -1,6 +1,7 @@
 import Airtable from 'airtable';
 import { RsvpUIState } from '@/state/reducers/rsvp';
 import { airtableUtil } from './util';
+import { InvitationTableRow } from '../types';
 
 const airtableClient = new Airtable({
   apiKey: import.meta.env.VITE_AIRTABLE_API_KEY,
@@ -11,9 +12,17 @@ const invitationsTable = airtableClient.base(
 )('Invitations');
 
 class AirtableAPI {
-  static async getInvitations() {
+  static async getInvitations(): Promise<InvitationTableRow[]> {
     const data = await invitationsTable.select().all();
-    return data.map(airtableUtil.parseInvitationRow);
+
+    const validRows: InvitationTableRow[] = [];
+
+    data.forEach((d) => {
+      const parsed = airtableUtil.parseInvitationRow(d);
+      if (parsed) validRows.push(parsed);
+    });
+
+    return validRows;
   }
 
   static async updateInvitation(rsvpState: RsvpUIState) {

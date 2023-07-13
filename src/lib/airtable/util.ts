@@ -15,10 +15,16 @@ const COL = {
   plusOne: 'Plus One',
 };
 
-const parseInvitationRow = (row: Record<FieldSet>): InvitationTableRow => {
+const parseInvitationRow = (
+  row: Record<FieldSet>
+): InvitationTableRow | undefined => {
   const { fields } = row;
 
-  const firstNameCOL = fields[COL.firstName] as string;
+  const firstNameCOL = fields[COL.firstName] as string | undefined;
+
+  if (!firstNameCOL) {
+    return undefined;
+  }
 
   const invitationRow: InvitationTableRow = {
     id: row.id as string,
