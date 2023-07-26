@@ -21,7 +21,7 @@ const faqCopy: QuestionAnswer[] = [
   {
     question: 'Where can I park?',
     answer:
-      'Yes! Guests can park in Lot A or B in any available space. If the lots are full, head to overflow parking in the upper parking lot.',
+      'Guests can park in Lot A or B in any available space. If the lots are full, head to overflow parking in the upper parking lot.',
   },
   {
     question: 'Can I take pictures during the ceremony?',
