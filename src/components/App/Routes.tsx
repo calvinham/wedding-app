@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { Routes as RouterRoutes, Route } from 'react-router-dom';
 
@@ -7,16 +7,29 @@ import RsvpPage from '@/pages/RsvpPage';
 import MissYouPage from '@/pages/MissYouPage';
 import SeeYouSoonPage from '@/pages/SeeYouSoonPage';
 
-import { FAQ_SLUG, MISS_YOU_SLUG, RSVP_SLUG, SEE_YOU_SOON_SLUG } from './slugs';
+import { SLUGS } from './slugs';
+import useShowReceptionDetails from '@/hooks/reception/useShowReceptionDetails';
+import ReceptionPage from '@/pages/ReceptionPage';
 
 const Routes: React.FC<{}> = () => {
+  const showReceptionDetails = useShowReceptionDetails();
+
+  const MainPage = useMemo(() => {
+    const component: React.FC<{}> = () =>
+      showReceptionDetails ? <ReceptionPage /> : <RsvpPage />;
+    return component;
+  }, [showReceptionDetails]);
+
   return (
     <RouterRoutes>
-      <Route index path={`/${RSVP_SLUG}`} element={<RsvpPage />} />
-      <Route path={`/${FAQ_SLUG}`} element={<FaqPage />} />
-      <Route path={`/${MISS_YOU_SLUG}`} element={<MissYouPage />} />
-      <Route path={`/${SEE_YOU_SOON_SLUG}`} element={<SeeYouSoonPage />} />
-      <Route path="*" element={null} />
+      <Route
+        path={`/${showReceptionDetails ? SLUGS.reception : SLUGS.rsvp}`}
+        element={<MainPage />}
+      />
+      <Route path={`/${SLUGS.faq}`} element={<FaqPage />} />
+      <Route path={`/${SLUGS.missYou}`} element={<MissYouPage />} />
+      <Route path={`/${SLUGS.seeYouSoon}`} element={<SeeYouSoonPage />} />
+      <Route path="*" element={<MainPage />} />
     </RouterRoutes>
   );
 };

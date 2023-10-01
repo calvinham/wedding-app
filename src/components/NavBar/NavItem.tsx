@@ -2,12 +2,13 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { FontSizes, FontWeights, responsiveSx } from '@/lib/ui';
-import { INavItem } from '@/components/NavBar/navItems';
+
 import SvgImgIcon from '@/components/Common/SvgImgIcon';
 import Row from '@/components/Common/Row';
 
 import { Typography } from '@mui/material';
 import NavPathOrLink from '@/components/Common/NavPathOrLink';
+import { INavItem } from '@/hooks/nav/useNavItems';
 
 const NavItem: React.FC<INavItem> = ({ path, img, minWidth, url }) => {
   const { pathname } = useLocation();

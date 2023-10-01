@@ -1,11 +1,14 @@
 import React from 'react';
 
 import NavItem from '@/components/NavBar/NavItem';
-import navItems from '@/components/NavBar/navItems';
+
 import { Box } from '@mui/material';
-import { AppPalette, responsiveSx } from '@/lib/ui';
+import { AppPalette, NavBarHeights, responsiveSx } from '@/lib/ui';
+import useNavItems from '@/hooks/nav/useNavItems';
 
 const NavBar: React.FC<{}> = () => {
+  const navItems = useNavItems();
+
   return (
     <Box
       width="100%"
@@ -19,6 +22,7 @@ const NavBar: React.FC<{}> = () => {
         sx={{
           alignItems: 'center',
           boxSizing: 'border-box',
+          minHeight: NavBarHeights.lgPx,
           gap: 4,
           ...responsiveSx({
             sm: {
