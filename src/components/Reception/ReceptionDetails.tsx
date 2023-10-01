@@ -1,10 +1,10 @@
 import { receptionImg } from '@/assets';
 import Col from '@/components/Common/Col';
 
-import SvgImgIcon from '@/components/Common/SvgImgIcon';
 import { FontWeights, NavBarHeights } from '@/lib/ui';
 import { Typography } from '@mui/material';
 import React from 'react';
+import FullSizeImg from '../Common/FullSizeImg';
 
 const copy = {
   address: '20 Red Fox Court, Chico CA 95973',
@@ -16,11 +16,7 @@ const ReceptionDetails: React.FC<{}> = () => (
   <Col
     alignItems="center"
     height="100%"
-    pb={{
-      xs: NavBarHeights.smPx,
-      md: NavBarHeights.lgPx,
-    }}
-    pt={{
+    py={{
       xs: NavBarHeights.smPx,
       md: NavBarHeights.lgPx,
     }}
@@ -33,14 +29,24 @@ const ReceptionDetails: React.FC<{}> = () => (
       height="100%"
     >
       <Col spacing={2} alignItems="center" width="100%">
-        <Typography variant="h1">{copy.address}</Typography>
-        <Typography variant="h2" fontWeight={FontWeights.base}>
+        <Typography variant="h1" textAlign="center">
+          {copy.address}
+        </Typography>
+        <Typography
+          variant="h2"
+          textAlign="center"
+          fontWeight={FontWeights.base}
+        >
           {copy.date}
         </Typography>
       </Col>
-      <SvgImgIcon src={receptionImg} />
+      <FullSizeImg alt="reception" src={receptionImg} />
       <Col alignItems="center">
-        <Typography variant="h2" fontWeight={FontWeights.base}>
+        <Typography
+          variant="h2"
+          fontWeight={FontWeights.base}
+          textAlign="center"
+        >
           {copy.rsvp}
         </Typography>
       </Col>

@@ -10,6 +10,7 @@ import SeeYouSoonPage from '@/pages/SeeYouSoonPage';
 import { SLUGS } from './slugs';
 import useShowReceptionDetails from '@/hooks/reception/useShowReceptionDetails';
 import ReceptionPage from '@/pages/ReceptionPage';
+import Error404Page from '@/pages/Error404Page';
 
 const Routes: React.FC<{}> = () => {
   const showReceptionDetails = useShowReceptionDetails();
@@ -29,7 +30,7 @@ const Routes: React.FC<{}> = () => {
       <Route path={`/${SLUGS.faq}`} element={<FaqPage />} />
       <Route path={`/${SLUGS.missYou}`} element={<MissYouPage />} />
       <Route path={`/${SLUGS.seeYouSoon}`} element={<SeeYouSoonPage />} />
-      <Route path="*" element={<MainPage />} />
+      <Route path="*" element={<Error404Page />} />
     </RouterRoutes>
   );
 };
