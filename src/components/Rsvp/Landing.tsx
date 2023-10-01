@@ -10,6 +10,7 @@ import BouncingScrollArrow, {
   IBouncingScrollArrow,
 } from '@/components/Rsvp/BouncingScrollArrow';
 import MediaController from '@/components/Common/MediaController';
+import useShowReceptionDetails from '@/hooks/reception/useShowReceptionDetails';
 
 export type ILanding = Pick<IBouncingScrollArrow, 'handleScroll'>;
 
@@ -27,6 +28,8 @@ const LandingImg: React.FC<{}> = () => {
 };
 
 const LandingText: React.FC<{}> = () => {
+  const showReceptionDetails = useShowReceptionDetails();
+
   return (
     <Typography
       fontWeight={FontWeights.bold}
@@ -40,7 +43,8 @@ const LandingText: React.FC<{}> = () => {
         },
       }}
     >
-      You&apos;re invited to the Wedding!
+      You&apos;re invited to the{' '}
+      {showReceptionDetails ? 'Reception' : 'Wedding'}!
     </Typography>
   );
 };
